@@ -1,0 +1,5 @@
+thead tr:nth-child(1) th{
+    background: white;
+    position: sticky;
+    top: 47px;
+  }
