@@ -1,9 +1,3 @@
-/*
- * Kyle Bailey
- * Assignment 4
- * 10/12/2022
- */
-
 document.addEventListener("DOMContentLoaded", load);
 
 // On load
