@@ -53,7 +53,6 @@ function getData()
         fetch(encodedURL)
             .then((result) => result.json())
             .then((data) => {
-                clearData();
                 displayData(data, userInput);
             });
     }
@@ -63,20 +62,23 @@ function getData()
 function displayData(data, userInput)
 {
     let container = document.getElementById('content');
+    let hint = document.getElementById('hint');
+    let tbody = document.getElementById('tbody');
+    tbody.innerHTML = '';
     container.style.display = "none";
+
+    document.getElementById('contentSection').append(hint);
+    hint.classList = "text-muted text-center pt-5";
+    hint.innerHTML = data.length > 0 ? 
+                    `The ${data.length} lane closures with a name that include '${userInput}'.` :
+                    `Could not find any roads that contain '${userInput}'.`;
 
     if (data.length > 0)
     {
         container.style.display = "block";
-        document.getElementById('hint').style.display = "none";
 
-        let tbody = document.getElementById('tbody');
-        let h2 = document.createElement('h2');
-        h2.className = "contentTitle mt-3";
-        h2.id = "contentTitle";
-        h2.innerHTML = `The ${data.length} lane closures with a name that include '${userInput}'.`
-
-        container.prepend(h2);
+        container.prepend(hint);
+        hint.classList = "text-muted pt-5";
 
         data.forEach((rowData) => {
             let tr = document.createElement("tr");
@@ -92,41 +94,5 @@ function displayData(data, userInput)
 
             tbody.append(tr);
         });
-    }
-    else
-    {
-        let bottomContainer = document.getElementById('contentSection');
-        let h2 = document.createElement("h2");
-        h2.className = "text-center";
-        h2.id = "noData";
-        h2.innerHTML = `Could not find any roads that contain '${userInput}'.`;
-        
-        bottomContainer.prepend(h2);
-    }
-}
-
-// Clears the data when a new query is made
-function clearData()
-{
-    let tbody = document.getElementById('tbody');
-    let child = tbody.lastElementChild;
-
-    // While the body contains a child, delete it until it is null
-    while(child)
-    {
-        tbody.removeChild(child);
-        child = tbody.lastElementChild;
-    }
-
-    let h2 = document.querySelector("#contentTitle");
-    let h2Data = document.getElementById("noData");
-
-    if (h2 !== undefined && h2 !== null)
-    {
-        h2.remove();
-    }
-    if (h2Data !== undefined && h2Data !== null)
-    {
-        h2Data.remove();
     }
 }
